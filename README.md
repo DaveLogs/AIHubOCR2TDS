@@ -1,7 +1,7 @@
 # AIHubOCR2DTRB
 Convert AIHub OCR format data to deep-text-recognition-benchmark format data.
 
-## Reference
+## References
 
 - [AIHub OCR](https://aihub.or.kr/aidata/133): Korean text images
 - [deep-text-recognition-benchmark](https://github.com/clovaai/deep-text-recognition-benchmark): Text recognition (optical character recognition) with deep learning methods.

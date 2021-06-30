@@ -1,2 +1,2 @@
 # AIHub2DTRB
-Convert AIHub data format to deep-text-recognition-benchmark's input data format.
+Convert AIHub format data to deep-text-recognition-benchmark format data.

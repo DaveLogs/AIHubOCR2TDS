@@ -1,4 +1,4 @@
-# AIHubOCR2DTRB
+# AIHubOCR2TDS
 Convert AIHub OCR format data to training-datasets-splitter format data.
 
 ## References
@@ -44,7 +44,7 @@ For the 'label_info.json' file structure, refer to the [AIHub OCR](https://aihub
 
 The structure of output data folder as below.
 
-* Output: for use in [deep-text-recognition-benchmark](https://github.com/clovaai/deep-text-recognition-benchmark) project.
+* Output: for use in [training-datasets-splitter](https://github.com/DaveLogs/training-datasets-splitter) project.
 
 ```
 /output

@@ -1,16 +1,17 @@
 # AIHubOCR2DTRB
-Convert AIHub OCR format data to deep-text-recognition-benchmark format data.
+Convert AIHub OCR format data to training-datasets-splitter format data.
 
 ## References
 
 - [AIHub OCR](https://aihub.or.kr/aidata/133): Korean text images
-- [deep-text-recognition-benchmark](https://github.com/clovaai/deep-text-recognition-benchmark): Text recognition (optical character recognition) with deep learning methods.
+- [training-datasets-splitter](https://github.com/DaveLogs/training-datasets-splitter): Split the training datasets into 'training'/'validation'/'test' data.
 
 ## Usage example
 
 ```bash
 (venv) $ python3 convert.py \
                 --input_path ./input \
+                --label_file ./input/labels.json \
                 --output_path ./output
 ```
 
@@ -22,12 +23,12 @@ The structure of input data folder as below.
 
 ```
 /input
-├── label.json
+├── label_info.json
 ├── /group1
 │   #   [id].[ext]
-│   ├── 0001.png
-│   ├── 0002.png
-│   ├── 0003.png
+│   ├── 0000000001.png
+│   ├── 0000000002.png
+│   ├── 0000000003.png
 │   └── ...
 │
 ├── /group2
@@ -36,7 +37,7 @@ The structure of input data folder as below.
 
 ### Label file structure
 
-For the 'label.json' file structure, refer to the [AIHub OCR](https://aihub.or.kr/aidata/133). 
+For the 'label_info.json' file structure, refer to the [AIHub OCR](https://aihub.or.kr/aidata/133). 
 
 
 ## Output Data Structure
@@ -48,13 +49,11 @@ The structure of output data folder as below.
 ```
 /output
 ├── /group1
-│   ├── gt.txt
-│   └── /images
-│       #   image_[idx].[ext]
-│       ├── image_00001.png
-│       ├── image_00001.png
-│       ├── image_00001.png
-│       └── ...
+│   #   [filename].[ext]
+│   ├── 0000000001.png
+│   ├── 0000000002.png
+│   ├── ...
+│   └── labels.txt
 │
 ├── /group2
 └── ...
@@ -66,8 +65,8 @@ The structure of output data folder as below.
 
 ```
 # {filename}\t{label}\n
-  images/image_00001.png	abcd
-  images/image_00002.png	efgh
-  images/image_00003.png	ijkl
+  0000000001.png	abcd
+  0000000002.png	efgh
+  0000000003.png	ijkl
   ...
 ```

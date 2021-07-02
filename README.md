@@ -59,9 +59,9 @@ The structure of output data folder as below.
 └── ...
 ```
 
-### Ground truth file structure
+### Label file structure
 
-* gt.txt
+* labels.txt
 
 ```
 # {filename}\t{label}\n

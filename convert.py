@@ -68,7 +68,8 @@ def run(args):
     if not os.path.exists(args.label_file):
         sys.exit(f"Can't find '{os.path.abspath(args.label_file)}' label file.")
 
-    groups, count = get_files(args.input_path, except_file=args.label_file)
+    # groups, count = get_files(args.input_path, except_file=args.label_file)
+    groups, count = get_groups(args.input_path)
 
     if os.path.isdir(args.output_path):
         sys.exit(f"'{os.path.abspath(args.output_path)}' directory is already exists.")
@@ -86,8 +87,8 @@ def run(args):
         output_path = os.path.join(args.output_path, group)
         with open(os.path.join(output_path, "labels.txt"), "w", encoding="utf8") as f:
 
-            input_path = os.path.join(args.input_path, group)
-            files, count = get_files(input_path)
+            group_path = os.path.join(args.input_path, group)
+            files, count = get_files(group_path)
             files.sort()
 
             digits = len(str(count))
@@ -99,7 +100,7 @@ def run(args):
                 label = get_text(labels_info, file)
                 f.write("{}\t{}\n".format(file, label))
 
-                fr = os.path.join(input_path, file)
+                fr = os.path.join(group_path, file)
                 to = os.path.join(output_path, file)
                 shutil.copy(fr, to)
 
@@ -128,6 +129,20 @@ def get_text(labels, file):
         sys.exit(f"Can't find '{image_id}' data in 'annotations' of label file.")
 
     return text
+
+
+def get_groups(path):
+    group_list = []
+
+    for item in os.listdir(path):
+        item_path = os.path.join(path, item)
+        if os.path.isfile(item_path):
+            print('except file name: ', item)
+            continue
+
+        group_list.append(item)
+
+    return group_list, len(group_list)
 
 
 def get_files(path, except_file=""):
@@ -160,7 +175,7 @@ def parse_arguments():
     parser.add_argument('--label_file', type=str, required=True, help='File path of label info')
     parser.add_argument('--input_path', type=str, required=True, help='Data path of AIHub OCR format data')
     parser.add_argument('--output_path', type=str, required=True,
-                        help='Data path for use in deep-text-recognition-benchmark project')
+                        help='Data path for use in training-datasets-splitter project')
 
     parsed_args = parser.parse_args()
     return parsed_args

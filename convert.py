@@ -54,7 +54,9 @@ Convert AIHub OCR format data to training-datasets-splitter format data.
 
 import os
 import sys
+import time
 import json
+import bisect
 import shutil
 import argparse
 
@@ -84,6 +86,7 @@ def run(args):
         print("\n[%d/%d] group: '%s'" % (ii+1, len(groups), group))
         print("-" * 40)
 
+        start_time = time.time()
         output_path = os.path.join(args.output_path, group)
         with open(os.path.join(output_path, "labels.txt"), "w", encoding="utf8") as f:
 
@@ -91,39 +94,48 @@ def run(args):
             files, count = get_files(group_path)
             files.sort()
 
+            names, ids = get_name_and_ids(labels_info)
+
             digits = len(str(count))
             for jj, file in enumerate(files):
-                # print("- [%d/%d] file: '%s'" % (jj + 1, count, file))
                 if (jj + 1) % 100 == 0:
                     print(("\r%{}d / %{}d Processing !!".format(digits, digits)) % (jj + 1, count), end="")
 
-                label = get_text(labels_info, file)
+                label = get_text(labels_info, names, ids, file)
                 f.write("{}\t{}\n".format(file, label))
 
                 fr = os.path.join(group_path, file)
                 to = os.path.join(output_path, file)
                 shutil.copy(fr, to)
 
-        print("\n")
+        elapsed_time = (time.time() - start_time) / 60.
+        print("\n- processing time: %.1fmin" % elapsed_time)
 
 
-def get_text(labels, file):
+def get_name_and_ids(labels):
+    """ Extract 'file_name' and 'image_ids' from JSON data """
+    names = []
+    for image in labels["images"]:
+        names.append(image["file_name"])
+
+    ids = []
+    for annotation in labels["annotations"]:
+        ids.append(annotation["image_id"])
+
+    return names, ids
+
+
+def get_text(labels, names, ids, file):
     """ Search text in nested JSON data """
 
-    image_id = ""
-    for idx, images in enumerate(labels["images"]):
-        if file == images["file_name"]:
-            image_id = labels["images"][idx]["id"]
-            break
+    idx = bisect.bisect(names, file) - 1
+    image_id = labels["images"][idx]["id"]
 
     if image_id == "":
         sys.exit(f"Can't find '{file}' data in 'images' of label file.")
 
-    text = ""
-    for idx, annotations in enumerate(labels["annotations"]):
-        if image_id == annotations["image_id"]:
-            text = labels["annotations"][idx]["text"]
-            break
+    idx = bisect.bisect(ids, image_id) - 1
+    text = labels["annotations"][idx]["text"]
 
     if text == "":
         sys.exit(f"Can't find '{image_id}' data in 'annotations' of label file.")

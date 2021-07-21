@@ -8,6 +8,7 @@ Convert AIHub OCR format data to training-datasets-splitter format data.
 
 ## Usage example
 
+### Convert datasets for 'printed', 'printed_augmentation' and 'handwritten' group.
 ```bash
 (venv) $ python3 convert.py \
                 --input_path ./input \
@@ -15,11 +16,20 @@ Convert AIHub OCR format data to training-datasets-splitter format data.
                 --output_path ./output
 ```
 
+### Convert datasets for 'textinthewild' group. 
+```bash
+(venv) $ python3 convert_textinthewild.py \
+                --input_path ./input \
+                --label_file ./input/labels.json \
+                --output_path ./output
+```
+
+
 ## Input Data Structures
 
 The structure of input data folder as below.
 
-* Input: [AIHub OCR](https://aihub.or.kr/aidata/133) format data
+* Input: [AIHub OCR](https://aihub.or.kr/aidata/133) format data 
 
 ```
 /input

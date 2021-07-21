@@ -8,7 +8,7 @@ Convert AIHub OCR format data (only 'textinthewild') to training-datasets-splitt
 2. training-datasets-splitter: https://github.com/DaveLogs/training-datasets-splitter
 
 ## Usage example:
-    python3 convert.py \
+    python3 convert_textinthewild.py \
             --input_path ./input \
             --label_file ./input/labels.json \
             --output_path ./output
